@@ -4,13 +4,21 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.app.Service;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 public class CheckService extends Service {
 
@@ -18,7 +26,7 @@ public class CheckService extends Service {
 	ExecutorService es;
 	boolean start_stop = false;
 	DBHelper dbHelper;
-  
+	
 	public void onCreate() {
 		super.onCreate();
 		Log.d(LOG_TAG, "MyService onCreate");
@@ -35,10 +43,29 @@ public class CheckService extends Service {
 
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(LOG_TAG, "MyService onStartCommand");
-		start_stop = true;
+		
+		if(isOnline()){
+			start_stop = true;
+			Toast.makeText(this, "Start", Toast.LENGTH_SHORT).show();
+		}
+		else{
+			start_stop = false;
+			Toast.makeText(this, "No access", Toast.LENGTH_SHORT).show();
+		}
+		
 		MyRun mr = new MyRun(startId);
 		es.execute(mr);
 		return super.onStartCommand(intent, flags, startId);
+	}
+	
+	public boolean isOnline() {
+		String cs = Context.CONNECTIVITY_SERVICE;
+		ConnectivityManager cm = (ConnectivityManager)getSystemService(cs);
+		cm.getActiveNetworkInfo();
+		if (cm.getActiveNetworkInfo() == null) {
+			return false;
+		}
+		return cm.getActiveNetworkInfo().isConnectedOrConnecting();
 	}
 
 	public IBinder onBind(Intent arg0) {
@@ -62,18 +89,23 @@ public class CheckService extends Service {
 			Random rand = new Random();
 			
 			while(start_stop){
-				response_random = rand.nextInt(5);
-				
-				if(response_random != 0)
-					response_random = 1;
-				
-				Log.d(LOG_TAG, "response = " + server_response[response_random] + " " +new  java.util.Date());
+				HttpClient client = new DefaultHttpClient();
+				HttpGet request = new HttpGet("http://"+Prime.getAddress());
+				Log.d(LOG_TAG, Prime.getAddress() + " ");
+				HttpResponse response = null;
+				try {
+					Log.d(LOG_TAG, "1");
+					response = client.execute(request);
+				} catch (Exception e) {
+					Log.d(LOG_TAG, "2");
+				} 
+				   
+				int statusCode = response.getStatusLine().getStatusCode();
 				
 				cv.put("date", new java.util.Date().getTime());
-			    cv.put("answer", server_response[response_random]);
-
-
-			      long rowID = db.insert("response", null, cv);
+			    cv.put("answer", statusCode);
+			    
+			    long rowID = db.insert("response", null, cv);
 			      Log.d(LOG_TAG, "row inserted, ID = " + rowID);
 				try {
 					Thread.sleep(1000);
@@ -82,6 +114,8 @@ public class CheckService extends Service {
 				}
 			}
 			stop();
+				//============   
+				
 	    }
 	    
 		void stop() {
