@@ -18,16 +18,16 @@ import android.widget.TextView;
 public class Pie extends Activity {
 	
 	public static final String TYPE = "type";
-	private static int[] COLORS = new int[] { Color.GREEN, Color.BLUE, Color.MAGENTA, Color.CYAN };//цвета серий
-	private CategorySeries mSeries = new CategorySeries("");//категории на диаграме
-	private DefaultRenderer mRenderer = new DefaultRenderer();//главный рендер
-	private GraphicalView mChartView;//вьюв (оксно) инкапсулирует диаграммы
+	private static int[] COLORS = new int[] { Color.GREEN, Color.BLUE, Color.MAGENTA, Color.CYAN };//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	private CategorySeries mSeries = new CategorySeries("");//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	private DefaultRenderer mRenderer = new DefaultRenderer();//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+	private GraphicalView mChartView;//пїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅ) пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	TextView textOk;
 	TextView textError;
 	
 	DBHelper dbHelper;
 	public int ok_status_count(){
-		  dbHelper = new DBHelper(this);
+	      dbHelper = new DBHelper(this);
 	      String str = "";
 	      SQLiteDatabase db = dbHelper.getWritableDatabase();
 	      Cursor c = db.rawQuery("SELECT COUNT(*) FROM response WHERE answer = 200", null);
@@ -50,23 +50,23 @@ public class Pie extends Activity {
 	      return count_error;
 	}
 	public void add_pie_slice(){	   
-        mSeries.add("Ok", ok_status_count());//добавляем новую категорию(номер + значение)
-        SimpleSeriesRenderer renderer = new SimpleSeriesRenderer();//рендер серий
-        renderer.setColor(Color.GREEN);//присваиваем серии цвет из массива
-        mRenderer.addSeriesRenderer(renderer);//основному передаем рендер серии
-        
-        if (mChartView != null) {
-          mChartView.repaint();//если не пусто, то перерисовуем (если бред ввели, то пусто и не стои рисовать)
-        }
-        SimpleSeriesRenderer renderer1 = new SimpleSeriesRenderer();//рендер серий
-        mSeries.add("Error", error_status_count());//добавляем новую категорию(номер + значение)
-      
-        renderer1.setColor(Color.RED);//присваиваем серии цвет из массива
-        mRenderer.addSeriesRenderer(renderer1);//основному передаем рендер серии       
-
-        if (mChartView != null) {
-          mChartView.repaint();//если не пусто, то перерисовуем (если бред ввели, то пусто и не стои рисовать)
-        }
+	        mSeries.add("Ok", ok_status_count());//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ(пїЅпїЅпїЅпїЅпїЅ + пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
+	        SimpleSeriesRenderer renderer = new SimpleSeriesRenderer();//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	        renderer.setColor(Color.GREEN);//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	        mRenderer.addSeriesRenderer(renderer);//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	        
+	        if (mChartView != null) {
+	          mChartView.repaint();//пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
+	        }
+	        SimpleSeriesRenderer renderer1 = new SimpleSeriesRenderer();//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	        mSeries.add("Error", error_status_count());//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ(пїЅпїЅпїЅпїЅпїЅ + пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
+	      
+	        renderer1.setColor(Color.RED);//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	        mRenderer.addSeriesRenderer(renderer1);//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ       
+	
+	        if (mChartView != null) {
+	          mChartView.repaint();//пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
+	        }
 	}
 	
 	@Override
@@ -76,7 +76,7 @@ public class Pie extends Activity {
 	   
 	    textOk = (TextView) findViewById(R.id.textOk);
 	    textError = (TextView) findViewById(R.id.textError);
-	    //Настрокай рендера
+	    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	    mRenderer.setApplyBackgroundColor(true);
 	    mRenderer.setBackgroundColor(Color.argb(100, 245, 245, 245));
 	    mRenderer.setLabelsTextSize(16);
@@ -84,7 +84,7 @@ public class Pie extends Activity {
 	    mRenderer.setShowLegend(false);
 	    mRenderer.setMargins(new int[] { 20, 30, 15, 0 });
 	    mRenderer.setStartAngle(90);
-	    //Считывание данных
+	    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 	    add_pie_slice();
 	}
@@ -94,8 +94,8 @@ public class Pie extends Activity {
     super.onResume();
     
     if (mChartView == null) {
-      LinearLayout layout = (LinearLayout) findViewById(R.id.chart);//лайоут в котором будем рисовать
-      mChartView = ChartFactory.getPieChartView(this, mSeries, mRenderer);//создание пие-диаграммы
+      LinearLayout layout = (LinearLayout) findViewById(R.id.chart);//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+      mChartView = ChartFactory.getPieChartView(this, mSeries, mRenderer);//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
       mRenderer.setClickEnabled(true);
       mRenderer.setSelectableBuffer(1);
 
