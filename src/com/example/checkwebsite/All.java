@@ -28,71 +28,71 @@ public class All extends Activity {
 	DBHelper dbHelper;
 	
   	public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.all);
-        
-        dbHelper = new DBHelper(this);
-        String str = "";
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
-        Cursor c = db.rawQuery("SELECT COUNT(*) FROM response", null);
-        c.moveToFirst();
-        str = c.getString(0);
-        int count = Integer.parseInt(str);
-        int j = 0;
-        Log.d(LOG_TAG, "2");
-        c = db.rawQuery("SELECT * FROM response", null);
-        
-        if (c.moveToFirst()) {
-
-            int idColIndex = c.getColumnIndex("id");
-            int dateColIndex = c.getColumnIndex("date");
-            int answerColIndex = c.getColumnIndex("answer");
-
-            do {
-            	String answ = c.getString(answerColIndex);
-            	Log.d(LOG_TAG, answ);
-            	answer.add(answ);
-            	str = c.getString(dateColIndex);
-            	Date dt = new Date(Long.parseLong(str));
-
-                str = dt.toString();
- 
-                SimpleDateFormat Format_date = new SimpleDateFormat("MM.dd.yyyy HH:mm:ss");
-        	Format_date.format(dt);
-        		
-                date.add( Format_date.format(dt).toString());
-             
-             	 j++;
-              
-            } while (c.moveToNext());
-          } else
-            Log.d(LOG_TAG, "0 rows");
-          c.close();
-
-          List<HashMap<String,String>> aList = new ArrayList<HashMap<String,String>>();
-
-          for(int i=0;i<count;i++){
-              HashMap<String, String> hm = new HashMap<String,String>();
-              hm.put("txt", "Answer : " + answer.get(i));
-              hm.put("cur","Date : " + date.get(i));
-              if(answer.get(i).equals("200"))
-            	  hm.put("flag", Integer.toString(flags[0]) );
-              else
-            	  hm.put("flag", Integer.toString(flags[1]) );
-              aList.add(hm);
-          }
-
-          String[] from = { "flag","txt","cur" };
-
-          int[] to = { R.id.flag,R.id.txt,R.id.cur};
-
-          SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), aList, R.layout.listview_layout, from, to);
-
-        
-          ListView listView = ( ListView ) findViewById(R.id.listview);
-
-
-          listView.setAdapter(adapter);
-    }
+	        super.onCreate(savedInstanceState);
+	        setContentView(R.layout.all);
+	        
+	        dbHelper = new DBHelper(this);
+	        String str = "";
+	        SQLiteDatabase db = dbHelper.getWritableDatabase();
+	        
+	        Cursor c = db.rawQuery("SELECT COUNT(*) FROM response", null);
+	        c.moveToFirst();
+	        str = c.getString(0);
+	        int count = Integer.parseInt(str);
+	        int j = 0;
+	
+	        c = db.rawQuery("SELECT * FROM response", null);
+	        
+	        if (c.moveToFirst()) {
+	
+	            int idColIndex = c.getColumnIndex("id");
+	            int dateColIndex = c.getColumnIndex("date");
+	            int answerColIndex = c.getColumnIndex("answer");
+	
+	            do {
+	            	String answ = c.getString(answerColIndex);
+	            	Log.d(LOG_TAG, answ);
+	            	answer.add(answ);
+	            	str = c.getString(dateColIndex);
+	            	Date dt = new Date(Long.parseLong(str));
+	
+	                str = dt.toString();
+	 
+	                SimpleDateFormat Format_date = new SimpleDateFormat("MM.dd.yyyy HH:mm:ss");
+	        	Format_date.format(dt);
+	        		
+	                date.add( Format_date.format(dt).toString());
+	             
+	             	 j++;
+	              
+	            } while (c.moveToNext());
+	          } else
+	            Log.d(LOG_TAG, "0 rows");
+	          c.close();
+	
+	          List<HashMap<String,String>> aList = new ArrayList<HashMap<String,String>>();
+	
+	          for(int i=0;i<count;i++){
+	              HashMap<String, String> hm = new HashMap<String,String>();
+	              hm.put("txt", "Answer : " + answer.get(i));
+	              hm.put("cur","Date : " + date.get(i));
+	              if(answer.get(i).equals("200"))
+	            	  hm.put("flag", Integer.toString(flags[0]) );
+	              else
+	            	  hm.put("flag", Integer.toString(flags[1]) );
+	              aList.add(hm);
+	          }
+	
+	          String[] from = { "flag","txt","cur" };
+	
+	          int[] to = { R.id.flag,R.id.txt,R.id.cur};
+	
+	          SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), aList, R.layout.listview_layout, from, to);
+	
+	        
+	          ListView listView = ( ListView ) findViewById(R.id.listview);
+	
+	
+	          listView.setAdapter(adapter);
+    	}
 }
