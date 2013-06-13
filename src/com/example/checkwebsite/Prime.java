@@ -20,7 +20,7 @@ public class Prime extends Activity {
   	TextView date;
   	ImageView image;
   	EditText site_address;
-  	static String goal_address="sfdsdf";
+  	static String goal_addres;
   	final String LOG_TAG = "myLogs";
   	DBHelper dbHelper;
     	public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class Prime extends Activity {
     	 }
     
     	public void onClickPie(View v) {
-    		 Intent intent = new Intent(this, Pie.class);
+    		Intent intent = new Intent(this, Pie.class);
          	startActivity(intent);
     	}
     
@@ -98,15 +98,14 @@ public class Prime extends Activity {
 	        c = db.rawQuery("SELECT * FROM response WHERE id = " + str, null);
 	        c.moveToFirst();
 	        str = c.getString(1);
-	        Log.d(LOG_TAG, "1");
 	
 	        Date dt = new Date(Long.parseLong(str));
-	        Log.d(LOG_TAG, "2");
+
 	        str = dt.toString();
 	 
 	        SimpleDateFormat Format_date = new SimpleDateFormat("MM.dd.yyyy HH:mm:ss");
-			Format_date.format(dt);
-			image.setImageResource(R.drawable.red1);
+		Format_date.format(dt);
+		image.setImageResource(R.drawable.red1);
 	        return str = Format_date.format(dt).toString();
     	}
     
