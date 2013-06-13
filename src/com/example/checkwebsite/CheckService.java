@@ -36,9 +36,9 @@ public class CheckService extends Service {
 	}
   
 	public void onDestroy() {
-	  start_stop = false;
-	  super.onDestroy();
-	  Log.d(LOG_TAG, "MyService onDestroy");
+	 	 start_stop = false;
+	  	super.onDestroy();
+	  	Log.d(LOG_TAG, "MyService onDestroy");
 	}
 
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -77,70 +77,65 @@ public class CheckService extends Service {
 		ContentValues cv;
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		
-	    public MyRun(int startId) {
-	    	this.startId = startId;
-	    	cv = new ContentValues();
-	    	Log.d(LOG_TAG, "MyRun# create");
-	    }
+	    	public MyRun(int startId) {
+	    		this.startId = startId;
+	    		cv = new ContentValues();
+	    		Log.d(LOG_TAG, "MyRun# create");
+	    	}
 	    
 		public void run() {
-			int response_random;
-			int[] server_response = {500, 200};
-			Random rand = new Random();
-			
 			while(start_stop){
 				HttpClient client = new DefaultHttpClient();
 				HttpGet request = new HttpGet("http://"+Prime.getAddress());
 				Log.d(LOG_TAG, Prime.getAddress() + " ");
 				HttpResponse response = null;
 				try {
-					Log.d(LOG_TAG, "1");
 					response = client.execute(request);
 				} catch (Exception e) {
-					Log.d(LOG_TAG, "2");
+					Log.d(LOG_TAG, "no execute");
 				} 
 				   
 				int statusCode = response.getStatusLine().getStatusCode();
 				
 				cv.put("date", new java.util.Date().getTime());
-			    cv.put("answer", statusCode);
+			   	cv.put("answer", statusCode);
 			    
-			    long rowID = db.insert("response", null, cv);
-			      Log.d(LOG_TAG, "row inserted, ID = " + rowID);
+			    	long rowID = db.insert("response", null, cv);
+			      	Log.d(LOG_TAG, "row inserted, ID = " + rowID);
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					Log.d(LOG_TAG, "Œ¯Ë·Í‡");
+					Log.d(LOG_TAG, "Error thread");
 				}
 			}
 			stop();
-				//============   
 				
-	    }
+	    	}
 	    
-		void stop() {
+		public void stop() {
 			Log.d(LOG_TAG, "MyRun#" + startId + " end, stopSelf(" + startId + ")");
 			Log.d(LOG_TAG, "--- Rows in mytable: ---");
 
-		      Cursor c = db.query("response", null, null, null, null, null, null);
+		      	Cursor c = db.query("response", null, null, null, null, null, null);
 
-		      if (c.moveToFirst()) {
+		      	if (c.moveToFirst()) {
 
-		        int idColIndex = c.getColumnIndex("id");
-		        int nameColIndex = c.getColumnIndex("date");
-		        int emailColIndex = c.getColumnIndex("answer");
-
-		        do {
-
-		          Log.d(LOG_TAG,
-		              "ID = " + c.getInt(idColIndex) + 
-		              ", date = " + c.getLong(nameColIndex) + 
-		              ", answer = " + c.getInt(emailColIndex));
-
-		        } while (c.moveToNext());
-		      } else
-		        Log.d(LOG_TAG, "0 rows");
-		      c.close();
+			        int idColIndex = c.getColumnIndex("id");
+			        int nameColIndex = c.getColumnIndex("date");
+			        int emailColIndex = c.getColumnIndex("answer");
+	
+			        do {
+	
+			          Log.d(LOG_TAG,
+			              "ID = " + c.getInt(idColIndex) + 
+			              ", date = " + c.getLong(nameColIndex) + 
+			              ", answer = " + c.getInt(emailColIndex));
+	
+			        } while (c.moveToNext());
+		      	} else
+		        	Log.d(LOG_TAG, "0 rows");
+		        	
+		      	c.close();
 			stopSelf(startId);
 		}
 	}
